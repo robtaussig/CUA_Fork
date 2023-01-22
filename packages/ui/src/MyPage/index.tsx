@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { ScrollView, H2, Section, XStack } from 'tamagui';
+import { ScrollView, H2, Section, XStack, Paragraph, Spinner, YStack } from 'tamagui';
 import { Page } from './Page';
 import { NavBar } from './NavBar';
 import { PageSection } from './PageSection';
@@ -15,8 +15,11 @@ type Section = {
   content: React.ReactNode;
 };
 
+type Status = 'loading' | 'success' | 'error';
+
 interface Props {
   sections: Section[];
+  statuses?: Status[];
   pageTitle: string;
   navItems: NavItem[];
   isSettings?: boolean;
@@ -27,11 +30,15 @@ export const MyPage: React.FC<Props> = ({
   navItems,
   sections,
   isSettings,
+  statuses = [],
 }) => {
   const [isScrollingDown, setIsScrollingDown] = useState(true);
   const scrollHigh = useRef(0);
   const scrollLow = useRef(Infinity);
   const { signOut } = useAuth();
+  const isLoading = statuses.some((status) => status === 'loading');
+  const isError = statuses.some((status) => status === 'error');
+  const isSuccess = !isLoading && !isError;
 
   return (
     <Page>
@@ -64,8 +71,14 @@ export const MyPage: React.FC<Props> = ({
         keyboardShouldPersistTaps={'handled'}
         space={'$4'}
         scrollEventThrottle={100}
-        paddingTop={TOP_NAV_HEIGHT}
-        paddingBottom={80}
+        marginTop={TOP_NAV_HEIGHT}
+        marginBottom={80}
+        contentContainerStyle={isLoading ? {
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%',
+          flex: 1,
+        } : undefined}
         onScroll={(e) => {
           const scrollPos = e.nativeEvent.contentOffset.y;
 
@@ -85,7 +98,11 @@ export const MyPage: React.FC<Props> = ({
           }
         }}
       >
-        {sections.map(({ title, content, Icon }) => (
+        {isError ? (
+          <Paragraph>Error...</Paragraph>
+        ) : isLoading ? (
+          <Spinner/>
+        ) : sections.map(({ title, content, Icon }) => (
           <PageSection key={title} space={'$2'}>
             <XStack ai={'center'} space={'$2'}>
               {Icon && <Icon color={'$green9'} />}

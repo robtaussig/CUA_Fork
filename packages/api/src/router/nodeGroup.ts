@@ -23,6 +23,27 @@ export const nodeGroupRouter = router({
       }
     })
   }),
+  one: publicProcedure.input(
+    z.object({
+      id: z.string(),
+    })
+  ).query(async ({ ctx, input }) => {
+    const nodeGroup = await ctx.prisma.nodeGroup.findFirst({
+      where: { id: input.id },
+      include: {
+        nodeGroupMembers: {
+          select: {
+            userId: true,
+          }
+        }
+      }
+    });
+
+    if (nodeGroup?.type !== 'PRIVATE') return nodeGroup;
+    if (nodeGroup.nodeGroupMembers.some(({ userId }) => userId === ctx.user?.id)) {
+      return nodeGroup;
+    }
+  }),
   delete: protectedProcedure
     .input(
       z.object({

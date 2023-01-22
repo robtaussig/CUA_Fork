@@ -117,9 +117,8 @@ export function NativeNavigation() {
         name="category"
         component={CategoryScreen}
         options={{
-          title: "Category",
           headerShown: false,
-          // animation: 'default'
+          animation: 'default',
         }}
       />
 </Stack.Navigator>
