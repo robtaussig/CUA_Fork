@@ -1,11 +1,15 @@
 import { ClerkProvider } from '@clerk/clerk-expo';
 import { tokenCache } from './cache';
 
-const clerk_frontend_api = 'clerk.logical.pegasus-13.lcl.dev'; //ENTER YOUR ENV HERE
+//this should be the same as your next js frontend key
+const CLERK_PUBLISHABLE_KEY = 'clerk.logical.pegasus-13.lcl.dev'; //enter your clerk key here!
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider frontendApi={clerk_frontend_api} tokenCache={tokenCache}>
+    <ClerkProvider
+      frontendApi={CLERK_PUBLISHABLE_KEY}
+      tokenCache={tokenCache}
+    >
       {children}
     </ClerkProvider>
   );

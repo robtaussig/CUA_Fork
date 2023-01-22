@@ -1,12 +1,12 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "sqlite" // Change this to "postgresql" when you want to use PostgreSQL
+  url      = env("DATABASE_URL")
 }
 
 //user model
