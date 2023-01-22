@@ -9,30 +9,116 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-//photo model
-model Entry {
-    id       String   @id @default(cuid())
-    entryDay DateTime //the day that the entry is assigned to
-
-    urlFrontPhotoThumbnail String
-    urlFrontPhotoHD        String
-
-    urlBackPhotoThumbnail String
-    urlBackPhotoHD        String
-
-    user   User   @relation(fields: [userId], references: [id])
-    userId String
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
 //user model
 model User {
+    id                String            @id @default(cuid())
+    name              String?
+    email             String            @unique
+    createdAt         DateTime          @default(now())
+    updatedAt         DateTime          @updatedAt
+    createdNodeGroups NodeGroup[]
+    nodeGroupMembers  NodeGroupMember[]
+}
+
+enum NodeGroupType {
+    PRIVATE
+    PUBLIC_READ_ONLY
+    PUBLIC_READ_WRITE
+}
+
+//node group model
+model NodeGroup {
+    id               String            @id @default(cuid())
+    name             String
+    type             NodeGroupType     @default(PRIVATE)
+    createdAt        DateTime          @default(now())
+    updatedAt        DateTime          @updatedAt
+    createdBy        String
+    creator          User              @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+    nodeGroupMembers NodeGroupMember[]
+    nodes            Node[]
+
+    @@index([createdBy])
+}
+
+enum GroupMemberRole {
+    ADMIN
+    READ_WRITE
+    READ_ONLY
+    INVITEE
+}
+
+//node group member model
+model NodeGroupMember {
+    id                String             @id @default(cuid())
+    createdAt         DateTime           @default(now())
+    updatedAt         DateTime           @updatedAt
+    userId            String
+    user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+    nodeGroupId       String
+    nodeGroup         NodeGroup          @relation(fields: [nodeGroupId], references: [id], onDelete: Cascade)
+    role              GroupMemberRole    @default(READ_ONLY)
+    createdNodes      Node[]
+    nodeStatusUpdates NodeStatusUpdate[]
+
+    @@unique([userId, nodeGroupId])
+    @@index([userId])
+    @@index([nodeGroupId])
+}
+
+enum NodeStatus {
+    NOT_STARTED
+    STARTED
+    CANCELED
+    COMPLETED
+}
+
+//node model
+model Node {
+    id                String             @id @default(cuid())
+    name              String
+    description       String?
+    nodeGroupId       String
+    nodeGroup         NodeGroup          @relation(fields: [nodeGroupId], references: [id], onDelete: Cascade)
+    status            NodeStatus
+    createdAt         DateTime           @default(now())
+    updatedAt         DateTime           @updatedAt
+    createdBy         String?
+    creator           NodeGroupMember?   @relation(fields: [createdBy], references: [id], onDelete: SetNull)
+    nodeStatusUpdates NodeStatusUpdate[]
+    parentNodes       NodeRelationship[] @relation(name: "childNode")
+    childNodes        NodeRelationship[] @relation(name: "parentNode")
+
+    @@index([nodeGroupId])
+    @@index([createdBy])
+}
+
+//node relationship model
+model NodeRelationship {
     id        String   @id @default(cuid())
-    name      String?
-    email     String   @unique
+    parentId  String
+    parent    Node     @relation(fields: [parentId], references: [id], name: "parentNode", onDelete: Cascade)
+    childId   String
+    child     Node     @relation(fields: [childId], references: [id], name: "childNode", onDelete: Cascade)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    entries   Entry[]
+
+    @@unique([parentId, childId])
+    @@unique([childId, parentId])
+    @@index([parentId])
+    @@index([childId])
+}
+
+//node status update
+model NodeStatusUpdate {
+    id        String           @id @default(cuid())
+    status    NodeStatus
+    createdAt DateTime         @default(now())
+    updatedAt DateTime         @updatedAt
+    createdBy String?
+    creator   NodeGroupMember? @relation(fields: [createdBy], references: [id], onDelete: SetNull)
+    nodeId    String
+    node      Node             @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+
+    @@index([nodeId])
 }
