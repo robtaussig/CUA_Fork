@@ -10,6 +10,7 @@ import { SSOOAuthScreen } from '../../features/signup/sso-oauth/screen';
 import { SearchScreen } from 'app/features/search/screen';
 import { BrowseScreen } from 'app/features/browse/screen';
 import { CreateScreen } from 'app/features/create/screen';
+import { CategoryScreen } from "../../features/category/screen";
 import { SettingsScreen } from 'app/features/settings/screen';
 
 const Stack = createNativeStackNavigator<{
@@ -25,6 +26,9 @@ const Stack = createNativeStackNavigator<{
   browse: undefined;
   create: undefined;
   settings: undefined;
+  "category": {
+    id:string;
+  };
 }>();
 
 export function NativeNavigation() {
@@ -109,6 +113,15 @@ export function NativeNavigation() {
           headerShown: false,
         }}
       />
-    </Stack.Navigator>
+      <Stack.Screen
+        name="category"
+        component={CategoryScreen}
+        options={{
+          title: "Category",
+          headerShown: false,
+          // animation: 'default'
+        }}
+      />
+</Stack.Navigator>
   );
 }

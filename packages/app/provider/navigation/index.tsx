@@ -25,7 +25,8 @@ export function NavigationProvider({
               browse: 'browse',
               create: 'create',
               settings: 'settings',
-            },
+              category: "category/:id",
+},
           },
         }),
         []

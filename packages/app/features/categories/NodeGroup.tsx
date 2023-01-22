@@ -22,7 +22,7 @@ export const NodeGroup: React.FC<Props> = ({ nodeGroup, nodeCount }) => {
         space={'$4'}
       >
         <MyButton
-          linkTo='/'
+          linkTo={`/category/${nodeGroup.id}`}
           icon={<Folder style={{ minHeight: 15, minWidth: 15 }} />}
           text={nodeGroup.name}
           textProps={{
