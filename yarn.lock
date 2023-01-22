@@ -1550,9 +1550,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@clerk/clerk-expo@npm:^0.10.16":
-  version: 0.10.18
-  resolution: "@clerk/clerk-expo@npm:0.10.18"
+"@clerk/clerk-expo@npm:^0.11.4":
+  version: 0.11.4
+  resolution: "@clerk/clerk-expo@npm:0.11.4"
   dependencies:
     "@clerk/clerk-js": ^4.23.2
     "@clerk/clerk-react": ^4.7.2
@@ -7905,7 +7905,7 @@ __metadata:
   dependencies:
     "@babel/core": ^7.17.9
     "@babel/runtime": ^7.18.9
-    "@clerk/clerk-expo": ^0.10.16
+    "@clerk/clerk-expo": ^0.11.4
     "@expo/metro-config": ^0.3.21
     "@my/ui": "*"
     "@tamagui/babel-plugin": 1.0.17

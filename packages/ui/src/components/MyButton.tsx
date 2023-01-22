@@ -1,14 +1,11 @@
 import {
   Button,
   ButtonText,
-  styled,
   ButtonProps,
   TextPropsBase,
   Paragraph,
 } from 'tamagui';
 import { useLink } from 'solito/link';
-
-const StyledButton = styled(Button, {});
 
 type BaseProps = {
   text?: string;
@@ -36,15 +33,15 @@ const JustAButton: React.FC<JustAButtonProps> = ({
 }) => {
   if (text)
     return (
-      <StyledButton icon={icon} onPress={onClick} {...buttonProps}>
+      <Button icon={icon} onPress={onClick} {...buttonProps}>
         <ButtonText color={buttonProps.color} {...textProps}>
           {text}
         </ButtonText>
-      </StyledButton>
+      </Button>
     );
 
   return (
-    <StyledButton
+    <Button
       icon={icon}
       onPress={onClick}
       color={isActive ? '$blue10' : undefined}
@@ -62,10 +59,10 @@ const JustALink: React.FC<JustALinkProps> = ({
   ...buttonProps
 }) => {
   const linkProps = useLink({ href: linkTo });
-  console.log({ buttonProps });
+
   if (text)
     return (
-      <StyledButton
+      <Button
         icon={icon}
         {...linkProps}
         color={isActive ? '$blue10' : undefined}
@@ -74,11 +71,11 @@ const JustALink: React.FC<JustALinkProps> = ({
         <Paragraph color={isActive ? '$blue10' : undefined} {...textProps}>
           {text}
         </Paragraph>
-      </StyledButton>
+      </Button>
     );
 
   return (
-    <StyledButton
+    <Button
       icon={icon}
       {...linkProps}
       color={isActive ? '$blue10' : undefined}

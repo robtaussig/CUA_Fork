@@ -61,6 +61,7 @@ export const MyPage: React.FC<Props> = ({
         </SignedOut>
       </TopNav>
       <ScrollView
+        keyboardShouldPersistTaps={'handled'}
         space={'$4'}
         scrollEventThrottle={100}
         paddingTop={TOP_NAV_HEIGHT}
