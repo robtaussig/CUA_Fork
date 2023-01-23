@@ -41,7 +41,12 @@ export const MyPage: React.FC<Props> = ({
   const isSuccess = !isLoading && !isError;
 
   return (
-    <Page>
+    <YStack
+      fullscreen={true}
+      px={'$4'}
+      overflow={'hidden'}
+      bc={'black'}
+    >
       <TopNav key={`${pageTitle}-top-nav`} show={isScrollingDown}>
         <H2 color={'white'} fontSize={20} marginRight={'auto'}>
           {pageTitle}
@@ -119,6 +124,6 @@ export const MyPage: React.FC<Props> = ({
           <NavLink key={navItem.text} item={navItem} />
         ))}
       </NavBar>
-    </Page>
+    </YStack>
   );
 };
