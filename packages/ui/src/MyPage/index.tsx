@@ -41,12 +41,7 @@ export const MyPage: React.FC<Props> = ({
   const isSuccess = !isLoading && !isError;
 
   return (
-    <YStack
-      fullscreen={true}
-      px={'$4'}
-      overflow={'hidden'}
-      bc={'black'}
-    >
+    <Page>
       <TopNav key={`${pageTitle}-top-nav`} show={isScrollingDown}>
         <H2 color={'white'} fontSize={20} marginRight={'auto'}>
           {pageTitle}
@@ -76,8 +71,8 @@ export const MyPage: React.FC<Props> = ({
         keyboardShouldPersistTaps={'handled'}
         space={'$4'}
         scrollEventThrottle={100}
-        marginTop={TOP_NAV_HEIGHT}
-        marginBottom={80}
+        paddingTop={TOP_NAV_HEIGHT}
+        paddingBottom={80}
         contentContainerStyle={isLoading ? {
           justifyContent: 'center',
           alignItems: 'center',
@@ -124,6 +119,6 @@ export const MyPage: React.FC<Props> = ({
           <NavLink key={navItem.text} item={navItem} />
         ))}
       </NavBar>
-    </YStack>
+    </Page>
   );
 };
